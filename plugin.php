@@ -37,14 +37,13 @@ add_action('enqueue_block_editor_assets', 'enqueue_mobile_cover_extension', 100)
 
 function enqueue_mobile_cover_extension() {
   
-  $css_dir = plugin_dir_path( __FILE__ ). '/css';
-  wp_register_style( 'style', $css_dir );
-  wp_enqueue_style( 'style' );
+  $dir = plugin_dir_url( __FILE__ );
 
-  $js_dir = plugin_dir_path( __FILE__ ). '/js';
-  wp_enqueue_script('mobile-cover', $js_dir . '/mobile-cover.js', [ 'wp-blocks', 'wp-dom' ] , null, true);
+  wp_register_style( 'mobile-cover-style', $dir.'css/mobile-cover-style.css' );
+  wp_enqueue_style( 'mobile-cover-style' );
+
+  wp_enqueue_script('mobile-cover', $dir.'js/mobile-cover.js', [ 'wp-blocks', 'wp-dom' ] , null, true);
 }
-
 
 /*
  Update 2023) As of latest WordPress, if you set the Cover to “Fixed Background”, the <img> will be replaced with <div role="img">. That means we can no longer uses <picture>.
