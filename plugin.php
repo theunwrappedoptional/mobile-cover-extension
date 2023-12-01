@@ -16,7 +16,7 @@
 /*
 	Upload a mobile friendly image for the Cover Block.
 
-    Copyright (C) <2023>  <MC>
+    Copyright (C) 2023 MC
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,3 +32,52 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
+
+add_action('enqueue_block_editor_assets', 'enqueue_mobile_cover_extension', 100);
+
+function enqueue_mobile_cover_extension() {
+  
+  $css_dir = plugin_dir_path( __FILE__ ). '/css';
+  wp_register_style( 'style', $css_dir );
+  wp_enqueue_style( 'style' );
+
+  $js_dir = plugin_dir_path( __FILE__ ). '/js';
+  wp_enqueue_script('mobile-cover', $js_dir . '/mobile-cover.js', [ 'wp-blocks', 'wp-dom' ] , null, true);
+}
+
+
+/*
+ Update 2023) As of latest WordPress, if you set the Cover to “Fixed Background”, the <img> will be replaced with <div role="img">. That means we can no longer uses <picture>.
+
+ The code below has conditional to check that. If using <div>, it will add extra CSS variable instead of wrapping it in <picture>
+*/
+
+add_filter('render_block_core/cover', 'my_responsive_cover_render', 10, 2);
+
+function my_responsive_cover_render($content, $block) {
+  // If has mobile image
+  if (isset($block['attrs']['mobileImageURL'])) {
+    $image = $block['attrs']['mobileImageURL'];
+
+    preg_match('/<div role="img"/', $content, $is_fixed);
+
+    // If fixed background, add CSS variable
+    if ($is_fixed) {
+      $content = preg_replace(
+        '/(<div role="img".+style=".+)(">)/Ui',
+        "$1;--mobileImageURL:url({$image});$2",
+        $content
+      );
+    }
+    // If not fixed, wrap in <picture>
+    else {
+      $content = preg_replace(
+        '/<img class="wp-block-cover__image.+\/>/Ui',
+        "<picture><source srcset='{$image}' media='(max-width:767px)'>$0</picture>",
+        $content
+      );
+    }
+  }
+
+  return $content;
+}
