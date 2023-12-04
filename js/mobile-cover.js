@@ -80,14 +80,18 @@
       }
 
       function renderMobileImage(obj) {
-        return el(
-          Button,
-          {
-            className: "button",
-            onClick: atts.mobileImageID === 0 ? obj.open : clearMobileImage, // Show "Upload image" when ID is 0, else show "Clear image"
-          },
-          atts.mobileImageID === 0 ? "Upload image" : "Clear image"
-        );
+        return el(Button, {
+          className: "button",
+          variant: "primary",
+          text:
+            !atts.mobileImageID || atts.mobileImageID === 0
+              ? "Upload image"
+              : "Clear image",
+          onClick:
+            !atts.mobileImageID || atts.mobileImageID === 0
+              ? obj.open
+              : clearMobileImage, // Show "Upload image" when ID is 0, else show "Clear image"
+        });
       }
 
       // Function to clear the mobile image
