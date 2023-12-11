@@ -1,4 +1,4 @@
-@media (max-width:768px) {
+@media (max-width:767px) {
   .wp-block-cover__image-background[style*="--mobileImageURL"] {
     background-image: var(--mobileImageURL) !important;
   }
