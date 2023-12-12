@@ -77,10 +77,10 @@ function my_responsive_cover_render($content, $block) {
     }
     // If not fixed, wrap in <picture>
     else {
-      $content = preg_replace(
-        '/<img class="wp-block-cover__image.+\/>/Ui',
-        "<picture><source srcset='{$image}' media='(max-width:767px)'>$0</picture>",
-        $content
+		$content = preg_replace(
+			'/<img class="wp-block-cover__image.+\/>/Ui',
+			"<picture><source srcset='{$image}' media='(max-width:767px)'>$0</picture>",
+			$content
       );
     }
   }
