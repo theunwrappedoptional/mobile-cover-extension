@@ -85,8 +85,8 @@
           variant: "primary",
           text:
             !atts.mobileImageID || atts.mobileImageID === 0
-              ? "Upload image"
-              : "Clear image",
+              ? "Upload Image"
+              : "Clear Image",
           onClick:
             !atts.mobileImageID || atts.mobileImageID === 0
               ? obj.open
